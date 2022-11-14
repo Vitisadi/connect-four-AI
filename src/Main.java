@@ -49,7 +49,6 @@ public class Main extends PApplet {
     }
 
 
-
     Coordinate findMouseLocation(){ //ar[0] = x & ar[1] = y
         Coordinate coordinate = new Coordinate(mouseX / 100, 7 - mouseY / 100);
 
