@@ -11,7 +11,9 @@ import java.util.ArrayList;
 
 
 public class Main extends PApplet {
-    ArrayList<ArrayList<Integer>> board = new ArrayList<ArrayList<Integer>>(); //0 = empty / 1 = player / 2 = computer
+    //ArrayList<ArrayList<Integer>> board = new ArrayList<ArrayList<Integer>>(); //0 = empty / 1 = player / 2 = computer
+    Game game = new Game();
+    Computer computer = new Computer();
     boolean helperChip = true; //True = enabled / False = disables - Grey helper chip to show where moving
 
 
@@ -23,7 +25,6 @@ public class Main extends PApplet {
 
     public void setup() {
         processing = this;
-        setupBoard();
     }
 
     public void draw() {
@@ -40,11 +41,11 @@ public class Main extends PApplet {
             return;
         }
 
-        for(int y = board.size() - 1; y >= 0; y--){ //Loop backwards (Start from bottom)
-            ArrayList<Integer> row = board.get(y);
+        for(int y = game.board.size() - 1; y >= 0; y--){ //Loop backwards (Start from bottom)
+            ArrayList<Integer> row = game.board.get(y);
             if(row.get(mouseColumn) == 0){
                 row.set(mouseColumn, 1);
-                computerMove();
+                Computer.move(game);
                 return;
             }
         }
@@ -58,8 +59,8 @@ public class Main extends PApplet {
         //Chips
         int mouseColumn = findMouseLocation();
         boolean mouseColumnDrawn = false;
-        for (int y = board.size() - 1; y >= 0; y--) { //Loop backwards (Start from bottom)
-            ArrayList<Integer> row = board.get(y);
+        for (int y = game.board.size() - 1; y >= 0; y--) { //Loop backwards (Start from bottom)
+            ArrayList<Integer> row = game.board.get(y);
             for (int x = 0; x < row.size(); x++) {
                 int value = row.get(x);
                 if (value == 0){ //Neutral
@@ -91,28 +92,14 @@ public class Main extends PApplet {
         rect(bound, 0, 100, height, 10);
         stroke(1);
     }
-
-    public void computerMove(){
-        Random rand = new Random();
-        int selectedColumn = rand.nextInt(7); //Random column
-        for(int y = board.size() - 1; y >= 0; y--){ //Loop backwards (Start from bottom)
-            ArrayList<Integer> row = board.get(y);
-            if(row.get(selectedColumn) == 0){
-                row.set(selectedColumn, 2);
-                return;
-            }
-        }
-
-        computerMove(); //remove later
-    }
-
+    
     void setupBoard(){
         for(int row = 0; row < 6; row++){
             ArrayList<Integer> rowList  = new ArrayList<>();
             for(int column = 0; column < 7; column++){
                 rowList.add(0);
             }
-            board.add(rowList);
+            game.board.add(rowList);
         }
     }
 
