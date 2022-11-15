@@ -1,9 +1,5 @@
 
-
-import java.util.Random;
-
 import processing.core.PApplet;
-import processing.core.PImage;
 
 import java.util.ArrayList;
 //https://commons.wikimedia.org/wiki/Category:PNG_chess_pieces/Standard_transparent
