@@ -1,5 +1,6 @@
 
 
+import java.util.Random;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 
 public class Main extends PApplet {
     ArrayList<ArrayList<Integer>> board = new ArrayList<ArrayList<Integer>>(); //0 = empty / 1 = player / 2 = computer
-    PImage board_image;
+    boolean helperChip = true; //True = enabled / False = disables - Grey helper chip to show where moving
 
 
 
@@ -31,8 +32,22 @@ public class Main extends PApplet {
     }
 
     public void mousePressed(){
-        int coordinate = findMouseLocation();
-        print(coordinate);
+        int mouseColumn = findMouseLocation();
+
+
+        //Add User Chip
+        if (mouseColumn == -1){
+            return;
+        }
+
+        for(int y = board.size() - 1; y >= 0; y--){ //Loop backwards (Start from bottom)
+            ArrayList<Integer> row = board.get(y);
+            if(row.get(mouseColumn) == 0){
+                row.set(mouseColumn, 1);
+                computerMove();
+                return;
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -40,22 +55,55 @@ public class Main extends PApplet {
     }
 
     void drawBoard(){
-        for (int y = 0; y < board.size(); y++) {
+        //Chips
+        int mouseColumn = findMouseLocation();
+        boolean mouseColumnDrawn = false;
+        for (int y = board.size() - 1; y >= 0; y--) { //Loop backwards (Start from bottom)
             ArrayList<Integer> row = board.get(y);
             for (int x = 0; x < row.size(); x++) {
                 int value = row.get(x);
                 if (value == 0){ //Neutral
-                    fill(255);
+                    if(mouseColumn == x && !mouseColumnDrawn && helperChip){
+                        fill(188, 212, 195);
+                        mouseColumnDrawn = true;
+                    } else {
+                        fill(255);
+                    }
                 } else if(value == 1){ //Player
                     fill(218, 224, 20);
                 } else { //Computer
                     fill(181, 11, 39);
                 }
+
                 ellipse(75 + x * 100, 75 + y * 100, 90, 90);
             }
 
-            //Tint here
+            
         }
+
+        //Tint
+        if (mouseColumn == -1){
+            return;
+        }
+        int bound = 75 - 50 + 100 * mouseColumn;
+        fill(255, 50);
+        noStroke();
+        rect(bound, 0, 100, height, 10);
+        stroke(1);
+    }
+
+    public void computerMove(){
+        Random rand = new Random();
+        int selectedColumn = rand.nextInt(7); //Random column
+        for(int y = board.size() - 1; y >= 0; y--){ //Loop backwards (Start from bottom)
+            ArrayList<Integer> row = board.get(y);
+            if(row.get(selectedColumn) == 0){
+                row.set(selectedColumn, 2);
+                return;
+            }
+        }
+
+        computerMove(); //remove later
     }
 
     void setupBoard(){
