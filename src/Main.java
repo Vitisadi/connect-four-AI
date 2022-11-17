@@ -40,8 +40,11 @@ public class Main extends PApplet {
         for(int y = game.board.size() - 1; y >= 0; y--){ //Loop backwards (Start from bottom)
             ArrayList<Integer> row = game.board.get(y);
             if(row.get(mouseColumn) == 0){
+                //Moves happen here
                 row.set(mouseColumn, 1);
-                Computer.move(game);
+                boolean over = game.isOver();
+                print(over);
+                    Computer.move(game);
                 return;
             }
         }

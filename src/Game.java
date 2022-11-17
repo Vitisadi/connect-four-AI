@@ -18,8 +18,33 @@ public class Game {
         }
     }
 
-    void getWinningRow(){
-        //If 4 in a row is found return a list of 4 "Coordinates" (Another class)
-        //If none is found return an empty list
+    boolean isOver(){ //https://stackoverflow.com/questions/32770321/connect-4-check-for-a-win-algorithm
+        //Check Horizontal
+        for (int j = 0; j<board.size() -1; j++ ){
+            ArrayList<Integer> row = board.get(j);
+            for(int y = 0; y < row.size() - 3; y++){
+                if (row.get(y) == 1 && row.get(y+1) == 1 &&row.get(y+2) == 1 && row.get(y+3) == 1){
+                    return true;
+                }   
+                //System.out.println(row.get(y));
+            }
+        }
+
+        // horizontalCheck 
+        /* 
+        int player = 1;
+        for (int j = 0; j<board.size() ; j++ ){
+            ArrayList<Integer> row = board.get(j);
+            for (int i = 0; i<row.size() - 2; i++){
+                
+                if (row.get(j) == player && row.get(j+1) == player &&row.get(j+2) == player && row.get(j+3) == player){
+                    return true;
+                }           
+            }
+        }
+        */
+        
+        return false;
     }
+
 }
