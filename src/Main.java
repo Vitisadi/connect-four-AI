@@ -11,6 +11,8 @@ public class Main extends PApplet {
     Game game = new Game();
     Computer computer = new Computer();
     boolean helperChip = true; //True = enabled / False = disables - Grey helper chip to show where moving
+    boolean gameEnded = false;
+    boolean playerWin = false;
 
 
 
@@ -26,11 +28,19 @@ public class Main extends PApplet {
     public void draw() {
         background(50, 162, 168);
         drawBoard();
+        if(gameEnded){
+            drawEnding();
+        }
     }
 
     public void mousePressed(){
-        int mouseColumn = findMouseLocation();
+        //Prevent interaction on end of game
+        if(gameEnded){
+            return;
+        }
 
+
+        int mouseColumn = findMouseLocation();
 
         //Add User Chip
         if (mouseColumn == -1){
@@ -42,9 +52,15 @@ public class Main extends PApplet {
             if(row.get(mouseColumn) == 0){
                 //Moves happen here
                 row.set(mouseColumn, 1);
-                boolean over = game.isOver();
-                print(over);
-                    Computer.move(game);
+                if(game.isOver()){
+                    gameEnded = true;
+                    playerWin = true;
+                } 
+                Computer.move(game);
+                if(game.isOver()){
+                    gameEnded = true;
+                    playerWin = false;
+                }
                 return;
             }
         }
@@ -52,6 +68,13 @@ public class Main extends PApplet {
 
     public static void main(String[] args) {
         PApplet.main("Main");
+    }
+
+    void drawEnding(){
+        //rectMode(CENTER);
+        fill(66, 120, 245);
+        rect(width/2, height/2, width/4, height/4, 20);
+        //rectMode(LEFT);
     }
 
     void drawBoard(){
