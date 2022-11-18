@@ -1,4 +1,5 @@
 {
+<<<<<<< Updated upstream
     "java.project.referencedLibraries": {
         "include": [
             "lib/**/*.jar",
@@ -8,4 +9,11 @@
             "c:\\Users\\liakht\\Dropbox\\PC\\Downloads\\processing-4.0.1-windows-x64\\processing-4.0.1\\core\\library\\core.jar"
         ]
     }
+=======
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\liakht\\Dropbox\\PC\\Downloads\\processing-4.0.1-windows-x64\\processing-4.0.1\\core\\library\\core.jar",
+        "c:\\Users\\rathgm\\Processing\\processing-4.0.1\\core\\library\\core.jar"
+    ]
+>>>>>>> Stashed changes
 }
