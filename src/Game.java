@@ -20,13 +20,40 @@ public class Game {
 
     boolean isOver(){ //https://stackoverflow.com/questions/32770321/connect-4-check-for-a-win-algorithm
         //Check Horizontal
-        for (int j = 0; j<board.size() -1; j++ ){
+        for (int j = 0; j<board.size(); j++ ){
             ArrayList<Integer> row = board.get(j);
             for(int y = 0; y < row.size() - 3; y++){
                 if (row.get(y) == 1 && row.get(y+1) == 1 &&row.get(y+2) == 1 && row.get(y+3) == 1){
                     return true;
                 }   
                 //System.out.println(row.get(y));
+            }
+        }
+
+        //Check Vertical
+        for (int r = 0; r<board.size() - 3 ; r++ ){
+            for (int c = 0; c<board.get(r).size(); c++){
+                if (board.get(r).get(c) == 1 && board.get(r+1).get(c) == 1 && board.get(r+2).get(c) == 1 && board.get(r+3).get(c) == 1){
+                    return true;
+                }           
+            }
+        }
+
+        //Check Ascending Diagonal
+        for (int r = 3; r<board.size(); r++){
+            for (int c = 0; c<board.get(r).size() - 3; c++){
+                if (board.get(r).get(c) == 1 && board.get(r-1).get(c+1) == 1 && board.get(r-2).get(c+2) == 1 && board.get(r-3).get(c+3) == 1){
+                    return true;
+                }
+            }
+        }
+
+        //Check Descending Diagonal
+        for (int r = 3; r<board.size(); r++){
+            for (int c = 3; c<board.get(r).size(); c++){
+                if (board.get(r).get(c) == 1 && board.get(r-1).get(c-1) == 1 && board.get(r-2).get(c-2) == 1 && board.get(r-3).get(c-3) == 1){
+                    return true;
+                }
             }
         }
 
