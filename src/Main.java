@@ -71,10 +71,6 @@ public class Main extends PApplet {
     }
 
     void drawEnding(){
-        //rectMode(CENTER);
-        //fill(66, 120, 245);
-        //rect(width/2, height/2, width/2, height/2, 20);
-        //rectMode(CORNER);
         textAlign(CENTER);
         textSize(75);
         fill(0);
@@ -102,7 +98,7 @@ public class Main extends PApplet {
             for (int x = 0; x < row.size(); x++) {
                 int value = row.get(x);
                 if (value == 0){ //Neutral
-                    if(mouseColumn == x && !mouseColumnDrawn && helperChip){
+                    if(mouseColumn == x && !mouseColumnDrawn && helperChip && game.status == Status.ACTIVE){
                         fill(188, 212, 195);
                         mouseColumnDrawn = true;
                     } else {
@@ -119,6 +115,8 @@ public class Main extends PApplet {
 
             
         }
+
+        if(game.status != Status.ACTIVE) return;
 
         //Tint
         if (mouseColumn == -1){
