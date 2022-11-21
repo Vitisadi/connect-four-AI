@@ -1,12 +1,17 @@
 import java.util.ArrayList;
 
 
+
 public class Game {
     ArrayList<ArrayList<Integer>> board = new ArrayList<ArrayList<Integer>>(); //0 = empty / 1 = player / 2 = computer
+    Status status;    
 
     Game(){ //Constructor
         createEmptyBoard();
+        status = Status.ACTIVE;
     }
+
+    
 
     void createEmptyBoard(){
         for(int row = 0; row < 6; row++){
@@ -56,20 +61,6 @@ public class Game {
                 }
             }
         }
-
-        // horizontalCheck 
-        /* 
-        int player = 1;
-        for (int j = 0; j<board.size() ; j++ ){
-            ArrayList<Integer> row = board.get(j);
-            for (int i = 0; i<row.size() - 2; i++){
-                
-                if (row.get(j) == player && row.get(j+1) == player &&row.get(j+2) == player && row.get(j+3) == player){
-                    return true;
-                }           
-            }
-        }
-        */
         
         return false;
     }

@@ -1,18 +1,17 @@
-
 import processing.core.PApplet;
 
 import java.util.ArrayList;
+
 //https://commons.wikimedia.org/wiki/Category:PNG_chess_pieces/Standard_transparent
 
 
 
 public class Main extends PApplet {
-    //ArrayList<ArrayList<Integer>> board = new ArrayList<ArrayList<Integer>>(); //0 = empty / 1 = player / 2 = computer
     Game game = new Game();
     Computer computer = new Computer();
     boolean helperChip = true; //True = enabled / False = disables - Grey helper chip to show where moving
-    boolean gameEnded = false;
-    boolean playerWin = false;
+    //boolean gameEnded = true;
+    //boolean playerWin = false;
 
 
 
@@ -23,19 +22,20 @@ public class Main extends PApplet {
 
     public void setup() {
         processing = this;
+        //game.status = Status.COMPUTER_WIN;
     }
 
     public void draw() {
         background(50, 162, 168);
         drawBoard();
-        if(gameEnded){
+        if(Status.ACTIVE != game.status){ //If game not active
             drawEnding();
         }
     }
 
     public void mousePressed(){
         //Prevent interaction on end of game
-        if(gameEnded){
+        if(Status.ACTIVE != game.status){
             return;
         }
 
@@ -53,13 +53,13 @@ public class Main extends PApplet {
                 //Moves happen here
                 row.set(mouseColumn, 1);
                 if(game.isOver()){
-                    gameEnded = true;
-                    playerWin = true;
+                    game.status = Status.PLAYER_WIN;
+                    return;
                 } 
                 Computer.move(game);
                 if(game.isOver()){
-                    gameEnded = true;
-                    playerWin = false;
+                    game.status = Status.COMPUTER_WIN;
+                    return;
                 }
                 return;
             }
@@ -72,9 +72,25 @@ public class Main extends PApplet {
 
     void drawEnding(){
         //rectMode(CENTER);
-        fill(66, 120, 245);
-        rect(width/2, height/2, width/4, height/4, 20);
-        //rectMode(LEFT);
+        //fill(66, 120, 245);
+        //rect(width/2, height/2, width/2, height/2, 20);
+        //rectMode(CORNER);
+        textAlign(CENTER);
+        textSize(75);
+        fill(0);
+
+        if(game.status == Status.COMPUTER_WIN){
+            text("You lose!", width/2, 100);
+        } 
+        else if(game.status == Status.PLAYER_WIN){
+            text("You Win!", width/2, 100);
+        }
+        else if(game.status == Status.DRAW){
+            text("Draw!", width/2, 100);
+        }
+        else { //In theory should never get here
+            text("An error occured", width/2, 100);
+        }
     }
 
     void drawBoard(){
