@@ -1,12 +1,17 @@
 import java.util.ArrayList;
 
 
+
 public class Game {
     ArrayList<ArrayList<Integer>> board = new ArrayList<ArrayList<Integer>>(); //0 = empty / 1 = player / 2 = computer
+    Status status;    
 
     Game(){ //Constructor
         createEmptyBoard();
+        status = Status.ACTIVE;
     }
+
+    
 
     void createEmptyBoard(){
         for(int row = 0; row < 6; row++){
@@ -23,9 +28,11 @@ public class Game {
         for (int j = 0; j<board.size(); j++ ){
             ArrayList<Integer> row = board.get(j);
             for(int y = 0; y < row.size() - 3; y++){
-                if (row.get(y) == 1 && row.get(y+1) == 1 &&row.get(y+2) == 1 && row.get(y+3) == 1){
-                    return true;
-                }   
+                for(int p = 1; p < 3; p++){
+                    if (row.get(y) == p && row.get(y+1) == p &&row.get(y+2) == p && row.get(y+3) == p){
+                        return true;
+                    }   
+                }
                 //System.out.println(row.get(y));
             }
         }
@@ -33,17 +40,21 @@ public class Game {
         //Check Vertical
         for (int r = 0; r<board.size() - 3 ; r++ ){
             for (int c = 0; c<board.get(r).size(); c++){
-                if (board.get(r).get(c) == 1 && board.get(r+1).get(c) == 1 && board.get(r+2).get(c) == 1 && board.get(r+3).get(c) == 1){
-                    return true;
-                }           
+                for(int p = 1; p < 3; p++){
+                    if (board.get(r).get(c) == p && board.get(r+1).get(c) == p && board.get(r+2).get(c) == p && board.get(r+3).get(c) == p){
+                        return true;
+                    }          
+                } 
             }
         }
 
         //Check Ascending Diagonal
         for (int r = 3; r<board.size(); r++){
             for (int c = 0; c<board.get(r).size() - 3; c++){
-                if (board.get(r).get(c) == 1 && board.get(r-1).get(c+1) == 1 && board.get(r-2).get(c+2) == 1 && board.get(r-3).get(c+3) == 1){
-                    return true;
+                for(int p = 1; p < 3; p++){
+                    if (board.get(r).get(c) == p && board.get(r-1).get(c+1) == p && board.get(r-2).get(c+2) == p && board.get(r-3).get(c+3) == p){
+                        return true;
+                    }
                 }
             }
         }
@@ -51,25 +62,13 @@ public class Game {
         //Check Descending Diagonal
         for (int r = 3; r<board.size(); r++){
             for (int c = 3; c<board.get(r).size(); c++){
-                if (board.get(r).get(c) == 1 && board.get(r-1).get(c-1) == 1 && board.get(r-2).get(c-2) == 1 && board.get(r-3).get(c-3) == 1){
-                    return true;
+                for(int p = 1; p < 3; p++){
+                    if (board.get(r).get(c) == p && board.get(r-1).get(c-1) == p && board.get(r-2).get(c-2) == p && board.get(r-3).get(c-3) == p){
+                        return true;
+                    }
                 }
             }
         }
-
-        // horizontalCheck 
-        /* 
-        int player = 1;
-        for (int j = 0; j<board.size() ; j++ ){
-            ArrayList<Integer> row = board.get(j);
-            for (int i = 0; i<row.size() - 2; i++){
-                
-                if (row.get(j) == player && row.get(j+1) == player &&row.get(j+2) == player && row.get(j+3) == player){
-                    return true;
-                }           
-            }
-        }
-        */
         
         return false;
     }
