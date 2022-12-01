@@ -1,4 +1,6 @@
 import copy
+import math
+import random
 
 ## tutorial: https://youtu.be/MMLtza3CZFM
 
@@ -148,35 +150,50 @@ def find_best_move(board, piece):
 
     return best_col
 
-#make_move(main_board, 5, 0, AI)
-#make_move(main_board, 5, 1, AI)
-
-#make_move(main_board, 4, 0, AI)
-#make_move(main_board, 4, 1, AI)
-
-#make_move(main_board, 5, 2, PLAYER)
-#make_move(main_board, 5, 3, PLAYER)
-#make_move(main_board, 5, 4, PLAYER)
-
-#print_board(main_board)
-
-#print(find_best_move(main_board, AI))
+def is_terminal_node(board):
+    return check_victory(board, PLAYER) or check_victory(board, AI) or len(find_valid_moves(board)) == 0
 
 
+def minimax(board, depth, maximizingPlayer):
+    valid_moves = find_valid_moves(board)
+    is_terminal = is_terminal_node(board)
+    if depth == 0 or is_terminal: #Check if can't move anymore
+        if is_terminal:
+            if check_victory(board, AI):
+                return (None, 10000000000000)
+            elif check_victory(board, PLAYER):
+                return (None, -10000000000000)
+            else: #No more valid moves
+                return (None, 0)
+        else: #0 Depth
+            return (None, score_board(board, AI))
 
-A = []
-for i in range(6):
-    A.append([i, 1, 2, 3, 4, 5, 6])
+    if maximizingPlayer:
+        value = -math.inf
+        column = random.choice(valid_moves)
+        for col in valid_moves:
+            row = find_empty_row(board, col)
+            b_copy = board.copy()
+            make_move(b_copy, row, col, AI)
+            new_score = minimax(b_copy, depth - 1, False)[1]
+            if new_score > value: #max
+                value = new_score
+                column = col
+            return column, value
+    else:
+        value = math.inf
+        column = random.choice(valid_moves)
+        for col in valid_moves:
+            row = find_empty_row(board, col)
+            b_copy = board.copy()
+            make_move(b_copy, row, col, PLAYER)
+            new_score = minimax(b_copy, depth - 1, True)[1]
+            if new_score < value: #min
+                value = new_score
+                column = col
+            return column, value
 
-print(A)
 
-a = A[0:4][3]
-print(a)
-
-b = []
-while(len(b) < 4):
-    for r in range(6):
-        for c in range(7):
-            if c == 3: b.append(r)
-
-print(b)
+make_move(main_board, 5, 0, PLAYER)
+make_move(main_board, 5, 1, PLAYER)
+col, minimax_score = minimax(main_board, 2, True) #left off at 1:12:54
