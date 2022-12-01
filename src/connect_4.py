@@ -115,10 +115,12 @@ def score_board(board, piece):
             score += evaluate_set(set, piece)
 
     ## checks all vertical sets of 4 locations *NOT WORKING*
+    """
     for c in range(NUM_COLS):
         for r in range(NUM_ROWS-3):
             set = board[r:r+4][c]
             score += evaluate_set(set, piece)
+    """
 
     ## checks all ascending diagonal sets of 4 locations
 
@@ -194,6 +196,37 @@ def minimax(board, depth, maximizingPlayer):
             return column, value
 
 
-make_move(main_board, 5, 0, PLAYER)
-make_move(main_board, 5, 1, PLAYER)
+#make_move(main_board, 5, 0, PLAYER)
+#make_move(main_board, 5, 1, PLAYER)
 col, minimax_score = minimax(main_board, 2, True) #left off at 1:12:54
+
+make_move(main_board, 5, 0, AI)
+make_move(main_board, 5, 1, AI)
+
+make_move(main_board, 4, 0, AI)
+make_move(main_board, 4, 1, AI)
+
+make_move(main_board, 5, 2, PLAYER)
+make_move(main_board, 5, 3, PLAYER)
+make_move(main_board, 5, 4, PLAYER)
+
+print_board(main_board)
+
+print(find_best_move(main_board, AI))
+
+A = []
+for i in range(6):
+    A.append([i, 1, 2, 3, 4, 5, 6])
+
+print(A)
+
+a = A[0:4][3]
+print(a)
+
+b = []
+while(len(b) < 4):
+    for r in range(6):
+        for c in range(7):
+            if c == 3: b.append(r)
+
+print(b)
