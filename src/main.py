@@ -27,7 +27,7 @@ async def list_games():
 if __name__ == '__main__':
     id = asyncio.run(create_game())
     print("Created game with id", id)
-    #asyncio.run(join_game(id))
+    asyncio.run(join_game(id))
     #asyncio.run(list_games())
 
     
