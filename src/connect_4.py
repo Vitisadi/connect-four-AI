@@ -99,17 +99,28 @@ def evaluate_set(set, piece):
         score += 2
 
     if set.count(opp) == 3 and set.count(EMPTY) == 1:
-        score -= 4
+        score -= 30
 
     return score
 
 def score_board(board, piece):
     score = 0
 
+    ## checks all horizontal sets of 4 locations
     for r in range(NUM_ROWS):
         for c in range(NUM_COLS-3):
             set = board[r][c:c+4]
             score += evaluate_set(set, piece)
+
+    ## checks all vertical sets of 4 locations *NOT WORKING*
+    for c in range(NUM_COLS):
+        for r in range(NUM_ROWS-3):
+            set = board[r:r+4][c]
+            score += evaluate_set(set, piece)
+
+    ## checks all ascending diagonal sets of 4 locations
+
+    ## checks all descending sets of 4 locations
 
     return score
 
@@ -128,6 +139,8 @@ def find_best_move(board, piece):
         row = find_empty_row(board, c)
         temp_board = copy.deepcopy(board)
         make_move(temp_board, row, c, piece)
+        print()
+        print_board(temp_board)
         score = score_board(temp_board, piece)
         if score > best_score:
             best_score = score
@@ -135,9 +148,35 @@ def find_best_move(board, piece):
 
     return best_col
 
-make_move(main_board, 5, 0, PLAYER)
-make_move(main_board, 5, 1, PLAYER)
+#make_move(main_board, 5, 0, AI)
+#make_move(main_board, 5, 1, AI)
 
-print_board(main_board)
+#make_move(main_board, 4, 0, AI)
+#make_move(main_board, 4, 1, AI)
 
-print(find_best_move(main_board, AI))
+#make_move(main_board, 5, 2, PLAYER)
+#make_move(main_board, 5, 3, PLAYER)
+#make_move(main_board, 5, 4, PLAYER)
+
+#print_board(main_board)
+
+#print(find_best_move(main_board, AI))
+
+
+
+A = []
+for i in range(6):
+    A.append([i, 1, 2, 3, 4, 5, 6])
+
+print(A)
+
+a = A[0:4][3]
+print(a)
+
+b = []
+while(len(b) < 4):
+    for r in range(6):
+        for c in range(7):
+            if c == 3: b.append(r)
+
+print(b)
