@@ -95,12 +95,16 @@ def evaluate_set(board, set, piece):
         values.append(board[item[0]][item[1]])
         next_row = find_empty_row(board, item[1])
 
+        if not board[item[0]][item[1]] == 0:
+            continue
+
         distance = -1
         if next_row == None: 
             distance = 0
         else:
             distance = (abs(item[0] - next_row))
         if distance == 0: distance = 1/2
+
         distances.append(distance)
 
     score = 0
