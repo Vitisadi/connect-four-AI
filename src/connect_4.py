@@ -87,21 +87,41 @@ def check_victory(board, piece):
 
     return False
 
-def evaluate_set(set, piece):
+def evaluate_set(board, set, piece):
+    values = []
+    distances = []
+
+    for item in set:
+        values.append(board[item[0]][item[1]])
+        next_row = find_empty_row(board, item[1])
+
+        distance = -1
+        if next_row == None: 
+            distance = 0
+        else:
+            distance = (abs(item[0] - next_row))
+        if distance == 0: distance = 1/2
+        distances.append(distance)
+
     score = 0
 
     if piece == PLAYER: opp = AI
     else: opp = PLAYER
 
-    if set.count(piece) == 4:
+    if values.count(piece) == 4:
         score += 100
-    elif set.count(piece) == 3 and set.count(EMPTY) == 1:
+    elif values.count(piece) == 3 and values.count(EMPTY) == 1:
         score += 5
-    elif set.count(piece) == 2 and set.count(EMPTY) == 2:
+    elif values.count(piece) == 2 and values.count(EMPTY) == 2:
         score += 2
 
-    if set.count(opp) == 3 and set.count(EMPTY) == 1:
-        score -= 4
+    if values.count(opp) == 3 and values.count(EMPTY) == 1:
+        score -= 50
+
+    for d in distances:
+        score *= (1/d)
+    score = round(score, 2)
+
 
     return score
 
@@ -110,7 +130,7 @@ def score_board(board, piece):
 
     center_array = []
     for r in range(NUM_ROWS):
-        center_array.append(board[r][3])
+        center_array.append((r, 3))
             
     center_count = center_array.count(piece)
     score += center_count * 3
@@ -118,27 +138,27 @@ def score_board(board, piece):
     #check horizontal
     for r in range(NUM_ROWS):
         for c in range(NUM_COLS - 3):
-            set = [board[r][c], board[r][c+1], board[r][c+2], board[r][c+3]]
-            score += evaluate_set(set, piece)
+            set = [(r, c), (r, c+1), (r, c+2), (r, c + 3)]
+            score += evaluate_set(board, set, piece)
                 
     ## checks all vertical sets of 4 locations *NOT WORKING*
     for r in range(NUM_ROWS - 3):
         for c in range(NUM_COLS):
-            set = [board[r][c], board[r+1][c], board[r+2][c], board[r+3][c]]
+            set = [(r, c), (r+1, c), (r+2, c), (r+3, c)]
             
-            score += evaluate_set(set, piece)
+            score += evaluate_set(board, set, piece)
 
     ## checks all ascending diagonal sets of 4 locations
     for r in range(3, NUM_ROWS):
         for c in range(NUM_COLS - 3):
-            set = [board[r][c], board[r-1][c+1], board[r-2][c+2], board[r-3][c+3]]
-            score += evaluate_set(set, piece)
+            set = [(r, c), (r-1, c+1), (r-2, c+2), (r-3, c+3)]
+            score += evaluate_set(board, set, piece)
 
     ## checks all descending sets of 4 locations
     for r in range(3, NUM_ROWS):
         for c in range(3, NUM_COLS):
-            set = [board[r][c], board[r-1][c-1], board[r-2][c-2], board[r-3][c-3]]
-            score += evaluate_set(set, piece)
+            set = [(r, c), (r-1, c-1), (r-2, c-2), (r-3, c-3)]
+            score += evaluate_set(board, set, piece)
 
     return score
 
@@ -153,6 +173,7 @@ def find_best_move(board, piece):
     valid_moves = find_valid_moves(board)
     best_score = -10000
     best_col = 0
+    considered_moves = []
     for c in valid_moves:
         row = find_empty_row(board, c)
         temp_board = copy.deepcopy(board)
@@ -160,9 +181,11 @@ def find_best_move(board, piece):
         #print()
         #print_board(temp_board)
         score = score_board(temp_board, piece)
+        considered_moves.append((c, score))
         if score > best_score:
             best_score = score
             best_col = c
+    print(considered_moves)
 
     return best_col
 
@@ -219,6 +242,25 @@ def minimax(board, depth, alpha, beta, maximizingPlayer):
                 break
         return column, value
 
+def final_check(board, selected_row, selected_column):
+    b_copy = copy.deepcopy(board)
+    make_move(b_copy, selected_row, selected_column, AI)
+    found_column = find_best_move(b_copy, PLAYER)
+    found_row = find_empty_row(b_copy, found_column)
+    if found_row == None:
+        return (selected_row, selected_column)
+    make_move(b_copy, found_row, found_column, PLAYER)
+
+    if check_victory(b_copy, PLAYER):
+        col, minimax_score = minimax(board, 2, -math.inf, math.inf, False) #7 ^ depth
+        row = find_empty_row(board, col)
+        return (row, col)
+    else:
+        return (selected_row, selected_column)
+
+    
+
+
 
 def get_opponent_move(column):
     column = int(column)
@@ -229,10 +271,10 @@ def get_opponent_move(column):
 
 def calculate_move(): #Give me AI move 
     column, minimax_score = minimax(main_board, 6, -math.inf, math.inf, False)
-    print(column)
 
     #column = find_best_move(main_board, AI) #Give column here
     row = find_empty_row(main_board, column)
+    row, column = final_check(main_board, row, column)
     
     make_move(main_board, row, column, AI)
     print("Sending move for column {} and row {}".format(column, row))
@@ -289,6 +331,9 @@ if __name__ == '__main__':
 
     col, minimax_score = minimax(main_board, 6, -math.inf, math.inf, False) #7 ^ depth
     print(col, minimax_score)
+
+    row = find_empty_row(main_board, col)
+    print(final_check(main_board, row, col))
 
     #print(find_best_move(main_board, AI))
     
