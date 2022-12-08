@@ -274,11 +274,11 @@ def get_opponent_move(column):
 
 
 def calculate_move(): #Give me AI move 
-    column, minimax_score = minimax(main_board, 6, -math.inf, math.inf, False)
+    column, minimax_score = minimax(main_board, 6, -math.inf, math.inf, True)
 
     #column = find_best_move(main_board, AI) #Give column here
     row = find_empty_row(main_board, column)
-    row, column = final_check(main_board, row, column)
+    #row, column = final_check(main_board, row, column)
     
     make_move(main_board, row, column, AI)
     print("Sending move for column {} and row {}".format(column, row))
@@ -333,7 +333,7 @@ if __name__ == '__main__':
 
     print_board(main_board)
 
-    col, minimax_score = minimax(main_board, 6, -math.inf, math.inf, False) #7 ^ depth
+    col, minimax_score = minimax(main_board, 6, -math.inf, math.inf, True) #7 ^ depth
     print(col, minimax_score)
 
     row = find_empty_row(main_board, col)

@@ -70,7 +70,7 @@ async def game_loop(socket, created):
 
 if __name__ == '__main__':
     #server = input('Server IP: ').strip()
-    server = "128.113.228.203:5000"
+    server = "129.161.70.165:5000"
     protocol = input('Do you want to join or create a game? (j/c) ').strip()\
 
     message = None
