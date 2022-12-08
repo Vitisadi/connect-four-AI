@@ -6,8 +6,8 @@ Instructions on setting up server can be fonud at [https://github.com/SharpBit/c
 
 **Setup**
 1. Clone the repo
-2. In the directory of the repo, run pip install -r requirements.txt
+2. In the directory of the repo, run `pip install -r requirements.txt`
 
 **Instructions**
 * Make sure the [server](https://github.com/exoRift/mindsmachines-connect4/) is running
-* Once setup run main.py and create / join a game 
+* Run `main.py` and create or join a game 
