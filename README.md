@@ -1,5 +1,5 @@
 # connect_four_AI
-Minds and Machines Fall 2022 Final
+Minds and Machines Fall 2022 Final Submission
 
 This project uses a connect 4 moderator program to play against humans / other computers.
 Instructions on setting up server can be fonud at [https://github.com/SharpBit/connect4/tree/c4scores](https://github.com/exoRift/mindsmachines-connect4)
